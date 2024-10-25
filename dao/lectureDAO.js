@@ -1,0 +1,1 @@
+// Data Access Object for Lecture model (interacts with MongoDB)

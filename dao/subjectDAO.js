@@ -1,0 +1,1 @@
+// Data Access Object for Subject model (interacts with MongoDB)

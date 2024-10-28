@@ -21,5 +21,5 @@ isEmailMessage = "Field is not valid phone email";
 module.exports = {
     notEmptyString, notEmptyStringMessage,
     isPhoneNumber, isPhoneNumberMessage,
-    isEmail, isEmailMessage
+    isEmail, isEmailMessage,
 };

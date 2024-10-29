@@ -1,14 +1,16 @@
 const Lecture = require("../models/lectureModel");
 
-async function noLecturesForThisTeacher(id){
-    return Lecture.find({teacher: id}).length > 0.
+async function existLecturesForThisTeacher(id) {
+    const lectureCount = await Lecture.countDocuments({ teacher: id });
+    return lectureCount > 0;
 }
 
-async function noLecturesForThisSubject(id){
-    return Lecture.find({subject: id}).length > 0;
+async function existLecturesForThisSubject(id) {
+    const lectureCount = await Lecture.countDocuments({ subject: id });
+    return lectureCount > 0;
 }
 
 module.exports = {
-    noLecturesForThisTeacher,
-    noLecturesForThisSubject
-}
+    existLecturesForThisTeacher,
+    existLecturesForThisSubject
+};

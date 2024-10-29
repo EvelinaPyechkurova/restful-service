@@ -1,6 +1,6 @@
 const Subject = require("../models/subjectModel");
 const Lecture = require("../models/lectureModel");
-const {noLecturesForThisSubject} = require("../utils/constraints");
+const {existLecturesForThisSubject} = require("../utils/constraints");
 
 // CRUD operations for Subject
 
@@ -80,8 +80,8 @@ async function updateSubject(id, subjectData){
 
 async function deleteSubject(id) {
     try{
-        const hasNoLectures = await noLecturesForThisSubject(id);
-        if (!hasNoLectures) 
+        const hasLectures = await existLecturesForThisSubject(id);
+        if (hasLectures) 
             throw new Error("Cannot delete subject with associated lectures.");
         
         return await Subject.findByIdAndDelete(id);

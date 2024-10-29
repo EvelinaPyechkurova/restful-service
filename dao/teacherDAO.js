@@ -1,6 +1,6 @@
 const Teacher = require("../models/teacherModel");
 const Lecture = require("../models/lectureModel");
-const {noLecturesForThisTeacher} = require("../utils/constraints");
+const {existLecturesForThisTeacher} = require("../utils/constraints");
 
 // CRUD operations for Teacher
 
@@ -71,8 +71,8 @@ async function updateTeacher(id, teacherData){
 
 async function deleteTeacher(id){
     try{
-        const hasNoLectures = await noLecturesForThisTeacher(id);
-        if (!hasNoLectures) 
+        const hasLectures = await existLecturesForThisTeacher(id);
+        if (hasLectures) 
             throw new Error("Cannot delete teacher with associated lectures.");
     
         return await Teacher.findByIdAndDelete(id);

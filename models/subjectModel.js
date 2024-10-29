@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const {notEmptyString,
      notEmptyStringMessage,
-} = require("../utils/validators");
+} = require("../utils/validators/subjectValidators");
 
 const subjectSchema = new mongoose.Schema({
     name: {

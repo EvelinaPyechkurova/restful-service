@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const {notEmptyString,
-    notEmptyStringMessage,
+    emptyStringMessage,
     isPhoneNumber,
-    isPhoneNumberMessage,
+    notPhoneNumberMessage,
     isEmail,
-    isEmailMessage
-} = require("../utils/validators");
+    notEmailMessage
+} = require("../utils/validators/teacherValidators");
 
 const teacherSchema = new mongoose.Schema({
     name: {
@@ -14,7 +14,7 @@ const teacherSchema = new mongoose.Schema({
         lowercase: true,
         validate: {
             validator: notEmptyString,
-            message: notEmptyStringMessage
+            message: emptyStringMessage
         }
     },
     surname: {
@@ -23,7 +23,7 @@ const teacherSchema = new mongoose.Schema({
         lowercase: true,
         validate: {
             validator: notEmptyString,
-            message: notEmptyStringMessage
+            message: emptyStringMessage
         }
     },
     phone: {
@@ -32,7 +32,7 @@ const teacherSchema = new mongoose.Schema({
         lowercase: true,
         validate: {
             validator: isPhoneNumber,
-            message: isPhoneNumberMessage
+            message: notPhoneNumberMessage
         }
     },
     email: {
@@ -41,7 +41,7 @@ const teacherSchema = new mongoose.Schema({
         lowercase: true,
         validate: {
             validator: isEmail,
-            message: isEmailMessage
+            message: notEmailMessage
         }
     }
 });

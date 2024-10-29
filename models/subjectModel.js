@@ -6,7 +6,7 @@ const {notEmptyString,
 const subjectSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Name is required for lecture"],
+        required: [true, "Name is required for subject"],
         lowercase: true,
         minlength: 2,
         maxlength: 50,
@@ -17,13 +17,13 @@ const subjectSchema = new mongoose.Schema({
     },
     year: {
         type: Number,
-        required: [true, "Year is required for lecture"],
+        required: [true, "Year is required for subject"],
         min: 1,
         max: 4
     },
     trimester: {
         type: String,
-        required: [true, "Trimester is required for lecture"],
+        required: [true, "Trimester is required for subject"],
         enum: ["autumn", "spring", "summer"]
     }
 });

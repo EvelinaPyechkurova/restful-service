@@ -40,6 +40,17 @@ async function getTeachersBySurname(surname){
     }
 }
 
+async function getTeachersBySubject(subjectId) {
+    try {
+        const lectures = await Lecture.find({subject: subjectId}).select("teacher");
+        const teacherIds = [...new Set(lectures.map(lecture => lecture.teacher))];
+        return await Teacher.find({ _id: { $in: teacherIds } });
+    } catch (error) {
+        console.error(`Error retrieving teachers for subject with ID ${subjectId}:`, error);
+        throw error;
+    }
+}
+
 async function createTeacher(teacherData){
     try{
         return await Teacher.create(teacherData);
@@ -75,6 +86,7 @@ module.exports = {
     getTeachers,
     getTeacherById,
     getTeachersByName,
+    getTeachersBySubject,
     getTeachersBySurname,
     createTeacher,
     updateTeacher,

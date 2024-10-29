@@ -1,4 +1,5 @@
 const Subject = require("../models/subjectModel");
+const Lecture = require("../models/lectureModel");
 const {noLecturesForThisSubject} = require("../utils/constraints");
 
 // CRUD operations for Subject
@@ -23,7 +24,7 @@ async function getSubjectById(id){
 
 async function getSubjectsByName(name){
     try{
-        return await Subject.find({name});
+        return await Subject.find({ name: new RegExp(`^${name}$`, 'i') });
     }catch (error){
         console.error(`Error retrieving subjects by name ${name}:`, error);
         throw error;
@@ -42,8 +43,19 @@ async function getSubjectsByYear(year){
 async function getSubjectsByTrimester(trimester){
     try{
         return await Subject.find({trimester});
-    }catch (error){
+    }catch(error){
         console.error(`Error retrieving subjects by trimester ${trimester}:`, error);
+        throw error;
+    }
+}
+
+async function getSubjectByTeacher(teacherId){
+    try{
+        const lectures = await Lecture.find({teacher: teacherId}).select("subject");
+        const subjectIds = [...new Set(lectures.map(lecture => lecture.subject))];
+        return await Subject.find({_id : {$in: subjectIds}});
+    }catch(error){
+        console.error(`Error retrieving subjects by teacher with ID ${teacherId}:`, error);
         throw error;
     }
 }
@@ -85,6 +97,7 @@ module.exports = {
     getSubjectsByName,
     getSubjectsByYear,
     getSubjectsByTrimester,
+    getSubjectByTeacher,
     createSubject,
     updateSubject,
     deleteSubject

@@ -3,90 +3,60 @@ const {validateCreateTeacher, validateUpdateTeacher} = require("../utils/validat
 const {existLecturesForThisTeacher} = require("../utils/constraints");
 
 async function getAllTeachers(){
-    try{
-        return await teacherDAO.getTeachers();
-    }catch(error){
-        throw error;
-    }
+    return teacherDAO.getTeachers();
 }
 
-async function getTeachersById(id){
-    try{
-        return await teacherDAO.getTeacherById(id);
-    }catch(error){
-        throw error;
-    }
+async function getTeacherById(id){
+    return teacherDAO.getTeacherById(id);
 }
 
 async function getTeachersByName(name){
-    try{
-        return await teacherDAO.getTeachersByName(name);
-    }catch(error){
-        throw error;
-    }
+    return teacherDAO.getTeachersByName(name);
 }
 
 async function getTeachersBySurname(surname){
-    try{
-        return await teacherDAO.getTeachersBySurname(surname);
-    }catch(error){
-        throw error;
-    }
+    return teacherDAO.getTeachersBySurname(surname);
 }
 
 async function getTeachersBySubject(type){
-    try{
-        return await teacherDAO.getTeachersBySubject(type);
-    }catch(error){
-        throw error;
-    }
+    return teacherDAO.getTeachersBySubject(type);
 }
 
 async function createTeacher(teacherData){
     const teacherErrors = validateCreateTeacher(teacherData);
 
     if(teacherErrors)
-        return {error: teacherErrors};
-    try{
-        return await teacherDAO.createTeacher(teacherData);
-    }catch(error){
-        throw error;
-    }
+        throw new Error(teacherErrors)
+
+    return await teacherDAO.createTeacher(teacherData);
 }
 
 async function updateTeacher(id, teacherData){
     if(await getTeachersById(id) === null)
-        return { error: "Invalid data: cannot update non-existing teacher" };
+       throw new Error("Invalid data: cannot update non-existing teacher");
 
     const teacherErrors = validateUpdateTeacher(teacherData);
     if(teacherErrors)
-        return {error: teacherErrors};
-    try{
-        return await teacherDAO.updateTeacher(id, teacherData);
-    }catch(error){
-        throw error;
-    }
+        throw new Error(teacherErrors)
+
+    return await teacherDAO.updateTeacher(id, teacherData);
 }
 
 async function deleteTeacher(id){
-    try{
-        const hasLectures = await existLecturesForThisTeacher(id);
-        if (hasLectures) 
-            throw new Error("Cannot delete teacher with associated lectures.");
+    const hasLectures = await existLecturesForThisTeacher(id);
+    if (hasLectures) 
+        throw new Error("Cannot delete teacher with associated lectures.");
 
-        const result = await teacherDAO.deleteTeacher(id);
-        if (!result) 
-            return {message: "Teacher not found"};
+    const result = await teacherDAO.deleteTeacher(id);
+    if (!result) 
+        throw new Error("Teacher not found");
 
-        return {message: "Teacher deleted successfully"};
-    }catch (error){
-        throw error; 
-    }
+    return {message: "Teacher deleted successfully"};
 }
 
 module.exports = {
     getAllTeachers,
-    getTeachersById,
+    getTeacherById,
     getTeachersByName,
     getTeachersBySurname,
     getTeachersBySubject,

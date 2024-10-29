@@ -49,7 +49,7 @@ async function getSubjectsByTrimester(trimester){
     }
 }
 
-async function getSubjectByTeacher(teacherId){
+async function getSubjectsByTeacher(teacherId){
     try{
         const lectures = await Lecture.find({teacher: teacherId}).select("subject");
         const subjectIds = [...new Set(lectures.map(lecture => lecture.subject))];
@@ -97,7 +97,7 @@ module.exports = {
     getSubjectsByName,
     getSubjectsByYear,
     getSubjectsByTrimester,
-    getSubjectByTeacher,
+    getSubjectsByTeacher,
     createSubject,
     updateSubject,
     deleteSubject

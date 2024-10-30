@@ -26,7 +26,7 @@ async function getLecturesByDate(date){
 }
 
 async function createLecture(lectureData){
-    const lectureErrors = validateCreateLecture(lectureData);
+    const lectureErrors = await validateCreateLecture(lectureData);
     if(lectureErrors)
         throw new Error(lectureErrors);
     
@@ -34,7 +34,7 @@ async function createLecture(lectureData){
 }
 
 async function updateLecture(id, lectureData){
-    const lectureErrors = validateUpdateLecture(lectureData);
+    const lectureErrors = await validateUpdateLecture(lectureData);
     if(lectureErrors)
         throw new Error(lectureErrors);
 
@@ -42,7 +42,11 @@ async function updateLecture(id, lectureData){
 }
 
 async function deleteLecture(id){
-    lectureDAO.deleteLecture(id);
+    const result = await lectureDAO.deleteLecture(id);
+    if (!result) 
+        throw new Error("Lecture not found");
+
+    return {message: "Lecture deleted successfully"};
 }
 
 module.exports = {

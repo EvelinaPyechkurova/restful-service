@@ -16,7 +16,7 @@ function validateCreateSubject(subject) {
     const errors = {};
 
     if (!subject || typeof subject !== "object" || Object.keys(subject).length !== 3) {
-        errors.general = "Teacher object is missing or contains an invalid number of fields";
+        errors.general = "Subject object is missing or contains an invalid number of fields";
         return errors;
     }
 

@@ -4,19 +4,19 @@ function notEmptyString(str){
 
 const emptyStringMessage = "field cannot be empty or consist of only whitespace";
 
-function isPhoneNumber(number) {
+function validPhoneNumber(number) {
     const phoneNumberPattern = /^\+?[0-9]{1,4}?[-.\s]?(\(?\d{1,3}?\))?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
     return notEmptyString(number) && phoneNumberPattern.test(number);
 }
 
-const notPhoneNumberMessage = "field is not valid phone number";
+const invalidPhoneNumberMessage = "field is not valid phone number";
 
-function isEmail(email){
+function validEmail(email){
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return notEmptyString(email) && emailPattern.test(email);
 }
 
-const notEmailMessage = "field is not valid phone email";
+const invalidEmailMessage = "field is not valid phone email";
 
 function validateCreateTeacher(teacher) {
     const errors = {};
@@ -32,10 +32,10 @@ function validateCreateTeacher(teacher) {
         errors.name = "Name " + emptyStringMessage;
     if (!notEmptyString(surname)) 
         errors.surname = "Surname " + emptyStringMessage;
-    if (!isPhoneNumber(phone))
-         errors.phone = "Phone " + notPhoneNumberMessage;
-    if (!isEmail(email)) 
-        errors.email = "Email " + notEmailMessage;
+    if (!validPhoneNumber(phone))
+         errors.phone = "Phone " + invalidPhoneNumberMessage;
+    if (!validEmail(email)) 
+        errors.email = "Email " + invalidEmailMessage;
 
     return Object.keys(errors).length > 0 ? errors : null;
 }
@@ -56,11 +56,11 @@ function validateUpdateTeacher(teacher) {
     if ("surname" in teacher && !notEmptyString(teacher.surname))
         errors.surname = "Surname " + emptyStringMessage;
 
-    if ("phone" in teacher && !isPhoneNumber(teacher.phone))
-        errors.phone = "Phone " + notPhoneNumberMessage;
+    if ("phone" in teacher && !validPhoneNumber(teacher.phone))
+        errors.phone = "Phone " + invalidPhoneNumberMessage;
 
     if ("email" in teacher && !isEmail(teacher.email))
-        errors.email = "Email " + notEmailMessage;
+        errors.email = "Email " + invalidEmailMessage;
 
     return Object.keys(errors).length > 0 ? errors : null;
 }
@@ -68,10 +68,10 @@ function validateUpdateTeacher(teacher) {
 module.exports = {
     notEmptyString,
     emptyStringMessage,
-    isPhoneNumber,
-    notPhoneNumberMessage,
-    isEmail,
-    notEmailMessage,
+    validPhoneNumber,
+    invalidPhoneNumberMessage,
+    validEmail,
+    invalidEmailMessage,
     validateCreateTeacher,
     validateUpdateTeacher
 };

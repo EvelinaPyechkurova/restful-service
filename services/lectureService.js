@@ -1,76 +1,48 @@
 const lectureDAO = require("../dao/lectureDAO");
+const {validateCreateLecture, validateUpdateLecture} = require("../utils/validators/lectureValidators");
 
 async function getAllLectures(){
-    try{
-        return await lectureDAO.getLectures();
-    }catch(error){
-        console.log(error.message)
-    }
+    return await lectureDAO.getLectures();
 }
 
 async function getLectureById(id){
-    try{
-        return await lectureDAO.getLectureById(id);
-    }catch(error){
-        console.log(error.message)
-    }
+    return await lectureDAO.getLectureById(id);
 }
 
 async function getLecturesBySubject(subject){
-    try{
-        return await lectureDAO.getLecturesBySubject(subject);
-    }catch(error){
-        console.log(error.message)
-    }
+    return await lectureDAO.getLecturesBySubject(subject);
 }
 
 async function getLecturesByTeacher(teacher){
-    try{
-        return await lectureDAO.getLecturesByTeacher(teacher);
-    }catch(error){
-        console.log(error.message);
-    }
+    return await lectureDAO.getLecturesByTeacher(teacher);
 }
 
 async function getLecturesByType(type){
-    try{
-        return await lectureDAO.getLecturesByType(type);
-    }catch(error){
-        console.log(error.message);
-    }
+    return await lectureDAO.getLecturesByType(type);
 }
 
-
 async function getLecturesByDate(date){
-    try{
-        return await lectureDAO.getLecturesByDate(date);
-    }catch(error){
-        console.log(error.message);
-    }
+    return await lectureDAO.getLecturesByDate(date);
 }
 
 async function createLecture(lectureData){
-    try{
-        lectureDAO.createLecture(lectureData);
-    }catch(error){
-        console.log(error.message);
-    }
+    const lectureErrors = validateCreateLecture(lectureData);
+    if(lectureErrors)
+        throw new Error(lectureErrors);
+    
+    lectureDAO.createLecture(lectureData);
 }
 
 async function updateLecture(id, lectureData){
-    try{
-        lectureDAO.updateLecture(id, lectureData);
-    }catch(error){
-        console.log(error.message);
-    }
+    const lectureErrors = validateUpdateLecture(lectureData);
+    if(lectureErrors)
+        throw new Error(lectureErrors);
+
+    lectureDAO.updateLecture(id, lectureData);
 }
 
 async function deleteLecture(id){
-    try{
-        lectureDAO.deleteLecture(id);
-    }catch(error){
-        console.log(error.message);
-    }
+    lectureDAO.deleteLecture(id);
 }
 
 module.exports = {

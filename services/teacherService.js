@@ -32,7 +32,7 @@ async function createTeacher(teacherData){
 }
 
 async function updateTeacher(id, teacherData){
-    if(await getTeachersById(id) === null)
+    if(await getTeacherById(id) === null)
        throw new Error("Invalid data: cannot update non-existing teacher");
 
     const teacherErrors = validateUpdateTeacher(teacherData);

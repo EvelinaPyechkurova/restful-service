@@ -1,6 +1,7 @@
 const Subject = require("../../models/subjectModel");
 const Teacher = require("../../models/teacherModel");
-const {notEmptyString, emptyStringMessage} = require("./teacherValidators");
+const {notEmptyString} = require("./teacherValidators");
+const {LECTURE_TYPE_VALUES} = require("../constants");
 const mongoose = require("mongoose");
 
 async function validSubject(subject){
@@ -20,10 +21,10 @@ async function validTeacher(teacher){
 const invalidTeacherMessage = "Cannot create lecture for not existing teacher";
 
 function validType(type){
-    return notEmptyString(type) && ["theory", "practice"].includes(type);
+    return notEmptyString(type) && LECTURE_TYPE_VALUES.includes(type);
 }
 
-const invalidTypeMessage = "Type of lecture must be either 'theory' or 'practice'";
+const invalidTypeMessage = `Type of lecture must be one of ${LECTURE_TYPE_VALUES.join(", ")}`;
 
 function validDate(date){
     return date instanceof Date && !isNaN(date.getTime());

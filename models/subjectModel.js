@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {TRIMESTER_TYPE_VALUES} = require("../utils/constants");
 const {notEmptyString,
      notEmptyStringMessage,
 } = require("../utils/validators/subjectValidators");
@@ -24,7 +25,7 @@ const subjectSchema = new mongoose.Schema({
     trimester: {
         type: String,
         required: [true, "Trimester is required for subject"],
-        enum: ["autumn", "spring", "summer"]
+        enum: TRIMESTER_TYPE_VALUES
     }
 });
 

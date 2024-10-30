@@ -1,4 +1,5 @@
 const {notEmptyString, emptyStringMessage} = require("./teacherValidators");
+const {TRIMESTER_TYPE_VALUES} = require("../constants");
 
 function validYear(year){
     return year && typeof year === "number" && year >= 1 && year <= 4;
@@ -7,10 +8,10 @@ function validYear(year){
 const invalidYearMessage = "year must be present, number and in [1, 4]";
 
 function validTrimester(trimester){
-    return notEmptyString(trimester) && ["autumn", "spring", "summer"].includes(trimester);
+    return notEmptyString(trimester) && TRIMESTER_TYPE_VALUES.includes(trimester);
 }
 
-const invalidTrimesterMessage = "trimester must be present and be one of values ['autumn', 'spring', 'summer']";
+const invalidTrimesterMessage = `trimester must be present and be one of values ${TRIMESTER_TYPE_VALUES.join(", ")}`;
 
 function validateCreateSubject(subject) {
     const errors = {};

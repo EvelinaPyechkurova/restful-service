@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {LECTURE_TYPE_VALUES} = require("../utils/constants");
 
 const lectureSchema = new mongoose.Schema({
     subject: {
@@ -12,7 +13,7 @@ const lectureSchema = new mongoose.Schema({
     type: {
         type: String,
         required: [true, "Type is required for lecture"],
-        enum: ["theory", "practice"]
+        enum: LECTURE_TYPE_VALUES
     },
     date: {
         type: Date,

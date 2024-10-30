@@ -40,7 +40,7 @@ async function getLecturesByTeacher(teacher){
 
 async function getLecturesByType(type){
     try{
-        return await Lecture.find({type});
+        return await Lecture.find({type: new RegExp(`^${type}$`, 'i')});
     }catch (error){
         console.error(`Error retrieving lectures by type ${type}:`, error);
         throw error;

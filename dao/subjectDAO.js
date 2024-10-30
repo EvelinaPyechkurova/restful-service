@@ -42,7 +42,7 @@ async function getSubjectsByYear(year){
 
 async function getSubjectsByTrimester(trimester){
     try{
-        return await Subject.find({trimester});
+        return await Subject.find({trimester: new RegExp(`^${trimester}$`, 'i')});
     }catch(error){
         console.error(`Error retrieving subjects by trimester ${trimester}:`, error);
         throw error;

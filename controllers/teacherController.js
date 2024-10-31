@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 async function getTeacherByQueryParams(req, res){
     try{
-        const {name, surname, subject} = res.query;
+        const {name, surname, subject} = req.query;
         
         let teacherSet = await teacherService.getAllTeachers();
 
@@ -15,13 +15,14 @@ async function getTeacherByQueryParams(req, res){
         }
 
         if(surname){
-            const teachersBySurname = new Set(await teacherService.getTeachersBySurname(surname));
-            teacherSet = teacherSet.filter(teacher =>
-                teachersBySurname.some(teachersBySurname => teachersBySurname._id.equals(teacher._id)));
+            const teachersBySurname = await teacherService.getTeachersBySurname(surname);
+            teacherSet = teacherSet.filter(teacher => 
+                teachersBySurname.some(teachersBySurname => teachersBySurname._id.equals(teacher._id))
+            );
         }
 
         if(subject){
-            const teachersBySubject = new Set(await teacherService.getTeachersBySubject(subject));
+            const teachersBySubject = await teacherService.getTeachersBySubject(subject);
             teacherSet = teacherSet.filter(teacher =>
                 teachersBySubject.some(teachersBySubject => teachersBySubject._id.equals(teacher._id)));
         }
@@ -51,28 +52,32 @@ async function getTeacherById(req, res){
 
 async function createTeacher(req, res){
     try{
-        const teacher = req.body.teacherData;
-        teacherService.createTeacher(teacher);
+        const teacher = req.body;
+        await teacherService.createTeacher(teacher);
+        res.status(201).json({message: "Teacher created successfully"});
     }catch(error){
-        res.status(500).json({error: error.message});
+        res.status(400).json({error: error});
     }
 }
 
 async function updateTeacher(req, res){
     try{
-        const teacher = req.body.teacherData;
-        teacherService.updateTeacher(teacher);
+        const id = req.params.id;
+        const teacher = req.body;
+        await teacherService.updateTeacher(id, teacher);
+        res.status(200).json({message: "Teacher updated successfully"});
     }catch(error){
-        res.status(500).json({error: error.message});
+        res.status(400).json({error: error});
     }
 }
 
 async function deleteTeacher(req, res){
     try{
         const id = req.params.id;
-        teacherService.deleteTeacher(id);
+        await teacherService.deleteTeacher(id);
+        res.status(200).json({ message: "Teacher deleted successfully" });
     }catch(error){
-        res.status(500).json({error: error.message});
+        res.status(400).json({error: error.message});
     }
 }
 

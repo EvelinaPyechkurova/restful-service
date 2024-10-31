@@ -1,11 +1,11 @@
 function notEmptyString(str){
-    return !null(str) && typeof(str) === "string" && str.trim().length > 0;
+    return str != null && typeof(str) === "string" && str.trim().length > 0;
 }
 
 const emptyStringMessage = "field cannot be empty or consist of only whitespace";
 
-function validPhoneNumber(number) {
-    const phoneNumberPattern = /^\+?[0-9]{1,4}?[-.\s]?(\(?\d{1,3}?\))?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+function validPhoneNumber(number){
+    const phoneNumberPattern = /^\+?[1-9]\d{0,2}[-.\s]?(\(?\d{2,4}\)?)[-.\s]?\d{3,4}[-.\s]?\d{3,4}$/;
     return notEmptyString(number) && phoneNumberPattern.test(number);
 }
 
@@ -16,7 +16,7 @@ function validEmail(email){
     return notEmptyString(email) && emailPattern.test(email);
 }
 
-const invalidEmailMessage = "field is not valid phone email";
+const invalidEmailMessage = "field is not valid email";
 
 function validateCreateTeacher(teacher) {
     const errors = {};
@@ -33,7 +33,7 @@ function validateCreateTeacher(teacher) {
     if (!notEmptyString(surname)) 
         errors.surname = "Surname " + emptyStringMessage;
     if (!validPhoneNumber(phone))
-         errors.phone = "Phone " + invalidPhoneNumberMessage;
+        errors.phone = "Phone " + invalidPhoneNumberMessage;
     if (!validEmail(email)) 
         errors.email = "Email " + invalidEmailMessage;
 
@@ -59,7 +59,7 @@ function validateUpdateTeacher(teacher) {
     if ("phone" in teacher && !validPhoneNumber(teacher.phone))
         errors.phone = "Phone " + invalidPhoneNumberMessage;
 
-    if ("email" in teacher && !isEmail(teacher.email))
+    if ("email" in teacher && !validEmail(teacher.email))
         errors.email = "Email " + invalidEmailMessage;
 
     return Object.keys(errors).length > 0 ? errors : null;

@@ -26,7 +26,7 @@ async function createTeacher(teacherData){
     const teacherErrors = validateCreateTeacher(teacherData);
 
     if(teacherErrors)
-        throw new Error(teacherErrors)
+        throw teacherErrors;
 
     return await teacherDAO.createTeacher(teacherData);
 }
@@ -37,7 +37,7 @@ async function updateTeacher(id, teacherData){
 
     const teacherErrors = validateUpdateTeacher(teacherData);
     if(teacherErrors)
-        throw new Error(teacherErrors)
+        throw teacherErrors;
 
     return await teacherDAO.updateTeacher(id, teacherData);
 }

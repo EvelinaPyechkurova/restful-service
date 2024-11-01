@@ -27,7 +27,8 @@ function validType(type){
 const invalidTypeMessage = `Type of lecture must be one of ${LECTURE_TYPE_VALUES.join(", ")}`;
 
 function validDate(date){
-    return date instanceof Date && !isNaN(date.getTime());
+    const parsedDate = typeof date === 'string' ? new Date(date) : date;
+    return parsedDate instanceof Date && !isNaN(parsedDate.getTime());
 }
 
 const invalidDateMessage = "Invalid date format or value";

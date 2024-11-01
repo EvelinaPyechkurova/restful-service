@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 async function getSubjectsByQueryParams(req, res){
     try{
-        const {name, year, trimester} = req.query;
+        const {name, year, trimester, teacher} = req.query;
         
         let subjectSet = await subjectService.getAllSubjects();
 
@@ -25,6 +25,12 @@ async function getSubjectsByQueryParams(req, res){
             const subjectsByTrimester = await subjectService.getSubjectsByTrimester(trimester);
             subjectSet = subjectSet.filter(subject =>
                 subjectsByTrimester.some(subjectByTrimester => subjectByTrimester._id.equals(subject._id)));
+        }
+
+        if(teacher){
+            const subjectsByTeacher = await subjectService.getSubjectsByTeacher(teacher);
+            subjectSet = subjectSet.filter(subject =>
+                subjectsByTeacher.some(subjectByTeacher => subjectByTeacher._id.equals(subject._id)));
         }
        
         res.status(200).json(subjectSet);

@@ -28,7 +28,7 @@ async function getLecturesByDate(date){
 async function createLecture(lectureData){
     const lectureErrors = await validateCreateLecture(lectureData);
     if(lectureErrors)
-        throw new Error(lectureErrors);
+        throw lectureErrors;
     
     lectureDAO.createLecture(lectureData);
 }
@@ -36,7 +36,7 @@ async function createLecture(lectureData){
 async function updateLecture(id, lectureData){
     const lectureErrors = await validateUpdateLecture(lectureData);
     if(lectureErrors)
-        throw new Error(lectureErrors);
+        throw lectureErrors;
 
     lectureDAO.updateLecture(id, lectureData);
 }

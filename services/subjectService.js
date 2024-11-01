@@ -30,7 +30,7 @@ async function createSubject(subjectData){
     const subjectErrors = validateCreateSubject(subjectData);
 
     if(subjectErrors)
-        throw new Error(subjectErrors);
+        throw subjectErrors;
 
     return await subjectDAO.createSubject(subjectData);
 }
@@ -41,7 +41,7 @@ async function updateSubject(id, subjectData){
 
     const subjectErrors = validateUpdateSubject(subjectData);
     if(subjectErrors)
-        throw new Error(subjectErrors);
+        throw subjectErrors;
     
     return await subjectDAO.updateSubject(id, subjectData);
 }

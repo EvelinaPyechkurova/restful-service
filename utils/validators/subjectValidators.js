@@ -1,4 +1,4 @@
-const {notEmptyString, emptyStringMessage} = require("./teacherValidators");
+const {notEmptyString, emptyStringMessage, isLetterString, invalidLetterMessage} = require("./teacherValidators");
 const {TRIMESTER_TYPE_VALUES} = require("../constants");
 
 function validYear(year){
@@ -23,8 +23,8 @@ function validateCreateSubject(subject) {
 
     const { name, year, trimester } = subject;
 
-    if (!notEmptyString(name)) 
-        errors.name = "Name " + emptyStringMessage;
+    if (!notEmptyString(name) || !isLetterString(name)) 
+        errors.name = "Name " + emptyStringMessage + ", " + invalidLetterMessage;
     if (!validYear(year)) 
         errors.year = invalidYearMessage;
     if (!validTrimester(trimester))
@@ -43,8 +43,8 @@ function validateUpdateSubject(subject) {
     if (invalidFields.length > 0)
         errors.invalidFields = `Invalid fields in the update: ${invalidFields.join(", ")}`;
 
-    if ("name" in subject && !notEmptyString(subject.name))
-        errors.name = "Name " + emptyStringMessage;
+    if ("name" in subject && (!notEmptyString(subject.name) || !isLetterString(subject.name)))
+        errors.name = "Name " + emptyStringMessage + ", " + invalidLetterMessage;
 
     if ("year" in subject && !validYear(subject.year))
         errors.year = invalidYearMessage;
@@ -56,6 +56,8 @@ function validateUpdateSubject(subject) {
 }
 
 module.exports = {
+    notEmptyString,
+    emptyStringMessage,
     validateCreateSubject,
     validateUpdateSubject
 };

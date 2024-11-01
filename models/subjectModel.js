@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const {TRIMESTER_TYPE_VALUES} = require("../utils/constants");
-const {notEmptyString,
-     notEmptyStringMessage,
+const {
+    notEmptyString,
+    emptyStringMessage,
 } = require("../utils/validators/subjectValidators");
 
 const subjectSchema = new mongoose.Schema({
@@ -13,7 +14,7 @@ const subjectSchema = new mongoose.Schema({
         maxlength: 50,
         validate: {
             validator: notEmptyString,
-            message: notEmptyStringMessage
+            message: emptyStringMessage
         }
     },
     year: {

@@ -1,7 +1,7 @@
 const teacherService = require("../services/teacherService");
 const mongoose = require("mongoose");
 
-async function getTeacherByQueryParams(req, res){
+async function getTeachersByQueryParams(req, res){
     try{
         const {name, surname, subject} = req.query;
         
@@ -63,6 +63,11 @@ async function createTeacher(req, res){
 async function updateTeacher(req, res){
     try{
         const id = req.params.id;
+        const existingTeacher = await teacherService.getTeacherById(id);
+
+        if(!existingTeacher)
+            return res.status(404).json({error: `Teacher with ID ${id} not found`});
+
         const teacher = req.body;
         await teacherService.updateTeacher(id, teacher);
         res.status(200).json({message: "Teacher updated successfully"});
@@ -74,15 +79,19 @@ async function updateTeacher(req, res){
 async function deleteTeacher(req, res){
     try{
         const id = req.params.id;
+        const existingTeacher = await teacherService.getTeacherById(id);
+        if(!existingTeacher)
+            return res.status(404).json({error: `Teacher with ID ${id} not found`});
+
         await teacherService.deleteTeacher(id);
-        res.status(200).json({ message: "Teacher deleted successfully" });
+        res.status(200).json({message: "Teacher deleted successfully"});
     }catch(error){
         res.status(400).json({error: error.message});
     }
 }
 
 module.exports = {
-    getTeacherByQueryParams,
+    getTeachersByQueryParams,
     getTeacherById,
     createTeacher,
     updateTeacher,

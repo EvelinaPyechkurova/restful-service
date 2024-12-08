@@ -1,6 +1,9 @@
 require("./config/db");
 const express = require("express");
 require("dotenv").config();
+const cors = require('cors');
+
+
 const teacherRoutes = require("./routes/teacherRoutes");
 const subjectRoutes = require("./routes/subjectRoutes");
 const lectureRoutes = require("./routes/lectureRoutes");
@@ -9,6 +12,7 @@ const PORT = process.env.PORT;
 
 const server = express();
 
+server.use(cors({ origin: 'http://localhost:3001' }));
 server.use(express.json());
 
 server.use("/teachers", teacherRoutes);

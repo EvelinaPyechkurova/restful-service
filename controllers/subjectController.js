@@ -62,7 +62,7 @@ async function createSubject(req, res){
         await subjectService.createSubject(subject);
         res.status(201).json({message: "Subject created successfully"});
     }catch(error){
-        res.status(400).json({error: error});
+        res.status(400).json({error});
     }
 }
 
@@ -78,7 +78,7 @@ async function updateSubject(req, res){
         await subjectService.updateSubject(id, subject);
         res.status(200).json({message: "Subject updated successfully"});
     }catch(error){
-        res.status(400).json({error: error});
+        res.status(400).json({error});
     }
 }
 

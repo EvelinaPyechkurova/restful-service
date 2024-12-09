@@ -1,3 +1,5 @@
+const ValidationError = require("../errors/ValidationError");
+
 function notEmptyString(str){
     return str != null && typeof(str) === "string" && str.trim().length > 0;
 }
@@ -28,10 +30,8 @@ const invalidEmailMessage = "field is not valid email";
 function validateCreateTeacher(teacher) {
     const errors = {};
 
-    if (!teacher || typeof teacher !== "object" || Object.keys(teacher).length !== 4) {
+    if (!teacher || typeof teacher !== "object" || Object.keys(teacher).length !== 4)
         errors.general = "Teacher object is missing or contains an invalid number of fields";
-        return errors;
-    }
 
     const { name, surname, phone, email } = teacher;
 
@@ -48,7 +48,8 @@ function validateCreateTeacher(teacher) {
     if (!validEmail(email)) 
         errors.email = "Email " + invalidEmailMessage;
 
-    return Object.keys(errors).length > 0 ? errors : null;
+    if (Object.keys(errors).length > 0)
+        throw new ValidationError("Validation failed for creating teacher", errors);
 }
 
 function validateUpdateTeacher(teacher) {
@@ -73,8 +74,8 @@ function validateUpdateTeacher(teacher) {
     if ("email" in teacher && !validEmail(teacher.email))
         errors.email = "Email " + invalidEmailMessage;
 
-    return Object.keys(errors).length > 0 ? errors : null;
-}
+    if (Object.keys(errors).length > 0)
+        throw new ValidationError("Validation failed for updating teacher", errors);}
 
 module.exports = {
     notEmptyString,

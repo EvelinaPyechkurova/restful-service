@@ -26,18 +26,14 @@ async function getLecturesByDate(date){
 }
 
 async function createLecture(lectureData){
-    const lectureErrors = await validateCreateLecture(lectureData);
-    if(lectureErrors)
-        throw lectureErrors;
-    
+    await validateCreateLecture(lectureData);
     lectureDAO.createLecture(lectureData);
 }
 
 async function updateLecture(id, lectureData){
-    const lectureErrors = await validateUpdateLecture(lectureData);
-    if(lectureErrors)
-        throw lectureErrors;
-
+    if(await getLectureById(id) === null)
+        throw new Error("Invalid data: cannot update non-existing lecture");    
+    await validateUpdateLecture(lectureData);
     lectureDAO.updateLecture(id, lectureData);
 }
 

@@ -1,5 +1,6 @@
 const {notEmptyString, emptyStringMessage, isLetterString, invalidLetterMessage} = require("./teacherValidators");
 const {TRIMESTER_TYPE_VALUES} = require("../constants");
+const ValidationError = require("../errors/ValidationError");
 
 function validYear(year){
     return year && typeof year === "number" && year >= 1 && year <= 4;
@@ -16,10 +17,8 @@ const invalidTrimesterMessage = `trimester must be present and be one of values 
 function validateCreateSubject(subject) {
     const errors = {};
 
-    if (!subject || typeof subject !== "object" || Object.keys(subject).length !== 3) {
+    if (!subject || typeof subject !== "object" || Object.keys(subject).length !== 3)
         errors.general = "Subject object is missing or contains an invalid number of fields";
-        return errors;
-    }
 
     const { name, year, trimester } = subject;
 
@@ -30,7 +29,8 @@ function validateCreateSubject(subject) {
     if (!validTrimester(trimester))
         errors.trimester = invalidTrimesterMessage;
 
-    return Object.keys(errors).length > 0 ? errors : null;
+    if (Object.keys(errors).length > 0)
+        throw new ValidationError("Validation failed for creating subject", errors);
 }
 
 function validateUpdateSubject(subject) {
@@ -52,7 +52,8 @@ function validateUpdateSubject(subject) {
     if ("trimester" in subject && !validTrimester(subject.trimester))
         errors.trimester = invalidTrimesterMessage;
 
-    return Object.keys(errors).length > 0 ? errors : null;
+    if (Object.keys(errors).length > 0)
+        throw new ValidationError("Validation failed for updating subject", errors);
 }
 
 module.exports = {

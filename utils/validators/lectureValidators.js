@@ -3,6 +3,7 @@ const Teacher = require("../../models/teacherModel");
 const {notEmptyString} = require("./teacherValidators");
 const {LECTURE_TYPE_VALUES} = require("../constants");
 const mongoose = require("mongoose");
+const ValidationError = require("../errors/ValidationError");
 
 async function validSubject(subject){
     if(!mongoose.Types.ObjectId.isValid(subject))
@@ -36,26 +37,25 @@ const invalidDateMessage = "Invalid date format or value";
 async function validateCreateLecture(lecture){
     let errors = {};
 
-    if(!lecture || typeof lecture !== "object" || Object.keys(lecture).length !== 4){
+    if (!lecture || typeof lecture !== "object" || Object.keys(lecture).length !== 4)
         errors.general = "Lecture object is missing or contains an invalid number of fields";
-        return errors;
-    }
 
     const {subject, teacher, type, date} = lecture;
 
-    if(!(await validSubject(subject)))
+    if (!(await validSubject(subject)))
         errors.subject = invalidSubjectMessage;
 
-    if(!(await validTeacher(teacher)))
+    if (!(await validTeacher(teacher)))
         errors.teacher = invalidTeacherMessage;
 
-    if(!validType(type))
+    if (!validType(type))
         errors.type = invalidTypeMessage;
 
-    if(!validDate(date))
+    if (!validDate(date))
         errors.date = invalidDateMessage;
 
-    return Object.keys(errors).length > 0 ? errors : null;
+    if (Object.keys(errors).length > 0)
+        throw new ValidationError("Validation failed for creating lecture", errors);
 }
 
 async function validateUpdateLecture(lecture){
@@ -80,8 +80,9 @@ async function validateUpdateLecture(lecture){
     if ("date" in lecture && !validDate(lecture.date))
         errors.date = invalidDateMessage;
 
-    return Object.keys(errors).length > 0 ? errors : null;
-}
+    if (Object.keys(errors).length > 0)
+        throw new ValidationError("Validation failed for updating lecture", errors);
+    }
 
 
 module.exports = {

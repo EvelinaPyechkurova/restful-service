@@ -27,22 +27,14 @@ async function getSubjectsByTeacher(id){
 }
 
 async function createSubject(subjectData){
-    const subjectErrors = validateCreateSubject(subjectData);
-
-    if(subjectErrors)
-        throw subjectErrors;
-
+    validateCreateSubject(subjectData);
     return await subjectDAO.createSubject(subjectData);
 }
 
 async function updateSubject(id, subjectData){
     if(await getSubjectById(id) === null)
-       throw new Error("Invalid data: cannot update non-existing subject");
-
-    const subjectErrors = validateUpdateSubject(subjectData);
-    if(subjectErrors)
-        throw subjectErrors;
-    
+       throw new Error("Invalid data: cannot update non-existing subject");    
+    validateUpdateSubject(subjectData);
     return await subjectDAO.updateSubject(id, subjectData);
 }
 

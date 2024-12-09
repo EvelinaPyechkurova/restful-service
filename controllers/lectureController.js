@@ -62,7 +62,7 @@ async function createLecture(req, res){
         await lectureService.createLecture(lecture);
         res.status(201).json({message: "Lecture created successfully"});
     }catch(error){
-        res.status(400).json({error: error});
+        res.status(400).json({error});
     }
 }
 
@@ -78,7 +78,7 @@ async function updateLecture(req, res){
         await lectureService.updateLecture(id, lecture);
         res.status(200).json({message: "Lecture updated successfully"});
     }catch(error){
-        res.status(400).json({error: error});
+        res.status(400).json({error});
     }
 }
 

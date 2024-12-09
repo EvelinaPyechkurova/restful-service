@@ -56,7 +56,7 @@ async function createTeacher(req, res){
         await teacherService.createTeacher(teacher);
         res.status(201).json({message: "Teacher created successfully"});
     }catch(error){
-        res.status(400).json({error: error});
+        res.status(400).json({error});
     }
 }
 
@@ -72,7 +72,7 @@ async function updateTeacher(req, res){
         await teacherService.updateTeacher(id, teacher);
         res.status(200).json({message: "Teacher updated successfully"});
     }catch(error){
-        res.status(400).json({error: error});
+        res.status(400).json({error});
     }
 }
 

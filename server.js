@@ -12,7 +12,11 @@ const PORT = process.env.PORT;
 
 const server = express();
 
-server.use(cors({ origin: 'http://localhost:3001' }));
+server.use(cors(
+    { 
+        origin: `http://localhost:${FRONTEND_CLIENT_PORT}`
+    }
+));
 server.use(express.json());
 
 server.use("/teachers", teacherRoutes);
